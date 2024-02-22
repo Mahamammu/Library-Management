@@ -25,7 +25,7 @@ function Signup() {
 
     if (err.name === '' && err.email === '' && err.password === '') {
       axios
-        .post('https://library-1hth.onrender.com/signup', values)
+        .post('https://library-management-3.onrender.com/signup', values)
         .then((res) => {
           navigate('/login');
         })
