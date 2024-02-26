@@ -171,6 +171,34 @@ app.post('/borrowBook', (req, res) => {
     });
 });
 
+// Fetch user profile
+app.get('/profile', (req, res) => {
+    // Assuming you have a function to get user profile data from the database
+    db.query('SELECT name, email FROM users WHERE id = ?', [req.userId], (err, result) => {
+        if (err) {
+            console.error('Error fetching user profile:', err);
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+        if (result.length === 0) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+        res.json(result[0]);
+    });
+});
+
+// Update user profile
+app.post('/profile/update', (req, res) => {
+    const { name, password } = req.body;
+    // Assuming you have a function to update user profile data in the database
+    db.query('UPDATE users SET name = ?, password = ? WHERE id = ?', [name, password, req.userId], (err, result) => {
+        if (err) {
+            console.error('Error updating user profile:', err);
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+        res.json({ success: true, message: 'Profile updated successfully' });
+    });
+});
+
 server.listen(8081, () => {
     console.log("Server listening on port 8081");
 });
